@@ -151,13 +151,13 @@ run_sims = function(i, n, model, restricted, announce_progress = TRUE, subset_ro
 ###run simulations
 n_sim = 1000
 
-#model_sim1 = y_simulated ~ effort * social_inequality + (social_inequality || subject) + (effort * social_inequality || species) + (effort * social_inequality || paper)
+model_sim1 = y_simulated ~ effort * social_inequality + (social_inequality || subject) + (effort * social_inequality || species) + (effort * social_inequality || paper)
  
-#model_sim1_restricted = y_simulated ~ effort + (social_inequality || subject) + (effort * social_inequality || species) + (effort * social_inequality || paper)
+model_sim1_restricted = y_simulated ~ effort + (social_inequality || subject) + (effort * social_inequality || species) + (effort * social_inequality || paper)
  
-#simulation1 = run_sims(1, n_sim, model_sim1, model_sim1_restricted)
+simulation1 = run_sims(1, n_sim, model_sim1, model_sim1_restricted)
  
-#save(simulation1, file="/global/scratch/users/odedritov/simulation1.RData")
+save(simulation1, file="/global/scratch/users/odedritov/simulation1.RData")
  
 model_sim2 = y_simulated ~ effort * social_inequality + (social_inequality || subject) + (effort * social_inequality || species) + (effort + social_inequality | paper)
 
@@ -165,28 +165,28 @@ model_sim2_restricted = y_simulated ~ effort + (social_inequality || subject) + 
 
 simulation2 = run_sims(2, n_sim, model_sim2, model_sim2_restricted)
 
-#save(simulation2, file="/global/scratch/users/odedritov/simulation2.RData")
+save(simulation2, file="/global/scratch/users/odedritov/simulation2.RData")
 
-#model_sim3 = y_simulated ~ effort * social_inequality + (social_inequality || subject) + (effort + social_inequality || species) + (effort + social_inequality | paper)
+model_sim3 = y_simulated ~ effort * social_inequality + (social_inequality || subject) + (effort + social_inequality || species) + (effort + social_inequality | paper)
 
-#model_sim3_restricted = y_simulated ~ effort + (social_inequality || subject) + (effort + social_inequality || species) + (effort + social_inequality | paper)
+model_sim3_restricted = y_simulated ~ effort + (social_inequality || subject) + (effort + social_inequality || species) + (effort + social_inequality | paper)
 
-#simulation3 = run_sims(3, n_sim, model_sim3, model_sim3_restricted)
+simulation3 = run_sims(3, n_sim, model_sim3, model_sim3_restricted)
 
-#save(simulation3, file="/global/scratch/users/odedritov/simulation3.RData")
+save(simulation3, file="/global/scratch/users/odedritov/simulation3.RData")
 
-#model_sim4 = y_simulated ~ effort * social_inequality + (social_inequality || subject) + (effort + social_inequality || species) + (social_inequality | paper)
+model_sim4 = y_simulated ~ effort * social_inequality + (social_inequality || subject) + (effort + social_inequality || species) + (social_inequality | paper)
 
-#model_sim4_restricted = y_simulated ~ effort + (social_inequality || subject) + (effort + social_inequality || species) + (social_inequality | paper)
+model_sim4_restricted = y_simulated ~ effort + (social_inequality || subject) + (effort + social_inequality || species) + (social_inequality | paper)
 
-#simulation4 = run_sims(4, n_sim, model_sim4, model_sim4_restricted)
+simulation4 = run_sims(4, n_sim, model_sim4, model_sim4_restricted)
 
-#save(simulation4, file="/global/scratch/users/odedritov/simulation4.RData")
+save(simulation4, file="/global/scratch/users/odedritov/simulation4.RData")
 
-#model_sim4 = y_simulated ~ effort * social_inequality + (social_inequality || subject) + (social_inequality || species) + (social_inequality | paper)
+model_sim4 = y_simulated ~ effort * social_inequality + (social_inequality || subject) + (social_inequality || species) + (social_inequality | paper)
 
-#model_sim5_restricted = y_simulated ~ effort + (social_inequality || subject) + (social_inequality || species) + (social_inequality | paper)
+model_sim5_restricted = y_simulated ~ effort + (social_inequality || subject) + (social_inequality || species) + (social_inequality | paper)
 
-#simulation5 = run_sims(5, n_sim, model_sim5, model_sim5_restricted)
+simulation5 = run_sims(5, n_sim, model_sim5, model_sim5_restricted)
 
-#save(simulation5, file="/global/scratch/users/odedritov/simulation5.RData")
+save(simulation5, file="/global/scratch/users/odedritov/simulation5.RData")
