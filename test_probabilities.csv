@@ -1,0 +1,12 @@
+﻿distribution_inequality;effort_inequality;effort;partner_present;p
+n;n;n;n;0.05
+n;n;n;y;0.05
+n;n;y;n;0.1
+n;n;y;y;0.1
+n;y;y;y;0.22
+y;n;n;n;0.15
+y;n;n;y;0.15
+y;n;y;n;0.45
+y;n;y;y;0.4
+y;y;y;n;0.45
+y;y;y;y;0.7
