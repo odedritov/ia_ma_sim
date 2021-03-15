@@ -1,6 +1,6 @@
 ---
 title: "sim_results"
-output: html_document
+output: rmarkdown::github_document
 ---
 
 ```{r setup, include=FALSE}
