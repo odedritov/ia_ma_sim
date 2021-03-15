@@ -53,7 +53,7 @@ sd_effortXsocial_inequality_slope_subject = 0.75
 
 random_effects_v = data.frame(sd_intercept_species, sd_effort_slope_species, sd_social_ineqality_slope_species, sd_effortXsocial_inequality_slope_species,sd_intercept_study, sd_social_inequality_slope_study, sd_effort_slope_study, sd_effortXsocial_inequality_study, sd_intercept_subject, sd_effort_slope_subject, sd_social_ineqality_slope_subject, sd_effortXsocial_inequality_slope_subject)
 
-simulate_data = function(sim_data = covariates_with_probabilities, fixed_coefs = coef(fixed_model), random_effects = random_effects_v, .combine = "cbind"){
+simulate_data = function(seed = 1, sim_data = covariates_with_probabilities, fixed_coefs = coef(fixed_model), random_effects = random_effects_v, .combine = "cbind"){
   sim_data["b_intercept"] = fixed_coefs["(Intercept)"]
   sim_data["b_effort"] = fixed_coefs["efforty"]
   sim_data["b_social_inequality"] = fixed_coefs["social_inequalityy"]
@@ -92,7 +92,7 @@ simulate_data = function(sim_data = covariates_with_probabilities, fixed_coefs =
 ###define function to run n simulations
 run_sims = function(i, n, model, restricted, announce_progress = TRUE, subset_rows = TRUE){
   
-  directory = paste("/global/scratch/users/odedritov/sim_results_ritov/temp_simulation", i, "/", sep="")
+  directory = paste("/global/scratch/users/odedritov/sim_results/simulation_", i, "/", sep="")
   dir.create(directory)
   
   sim_results <- foreach(i = 1:n, .combine = "cbind", .export = c("simulate_data", "fixed_model", "random_effects_v", "covariates_with_probabilities", "subset_rows", "directory")) %dopar% {
@@ -103,7 +103,7 @@ run_sims = function(i, n, model, restricted, announce_progress = TRUE, subset_ro
     sim_summary = data.frame(matrix(ncol=9,nrow=0, dimnames=list(NULL, c("iteration", "b_intercept", "b_effort", "b_social_inequality", "b_effortXsocial_inequality", "p(social_inequality)", "p(model comparison)", "isSingular", "warnings"))))
     
     
-    temp_data = simulate_data()
+    temp_data = simulate_data(seed = i)
     
     temp_data = temp_data[subset_rows,]
     
@@ -120,8 +120,7 @@ run_sims = function(i, n, model, restricted, announce_progress = TRUE, subset_ro
     
     p_comparison = anova(temp_model$value, temp_model_restricted)$`Pr(>Chisq)`[2]
     
-    sim_summary = c(i, fixef(temp_model$value)[1], NA, 
-                    fixef(temp_model$value)[2], NA,
+    sim_summary = c(i, fixef(temp_model$value)[1:4],
                     summary(temp_model$value)$coefficients[2,4],
                     p_comparison,
                     isSingular(temp_model$value),
@@ -132,11 +131,6 @@ run_sims = function(i, n, model, restricted, announce_progress = TRUE, subset_ro
     
     
     save(iteration_data, file=paste(directory, i, ".RData", sep=""))
-    
-    
-    if(announce_progress){
-      print(paste("completed", i, "/", n))
-    }
     
     
     return(sim_summary)
@@ -158,20 +152,3 @@ model_sim1_restricted = y_simulated ~ effort + (social_inequality || subject) + 
 simulation1 = run_sims(1, n_sim, model_sim1, model_sim1_restricted)
  
 save(simulation1, file="/global/scratch/users/odedritov/simulation1.RData")
- 
-model_sim2 = y_simulated ~ effort * social_inequality + (social_inequality || subject) + (effort + social_inequality || species) + (social_inequality | paper)
-
-model_sim2_restricted = y_simulated ~ effort + (social_inequality || subject) + (effort + social_inequality || species) + (social_inequality | paper)
-
-simulation2 = run_sims(2, n_sim, model_sim2, model_sim2_restricted)
-
-save(simulation2, file="/global/scratch/users/odedritov/simulation2.RData")
-
-model_sim3 = y_simulated ~ effort * social_inequality + (social_inequality || subject) + (social_inequality || species) + (social_inequality | paper)
-
-model_sim3_restricted = y_simulated ~ effort + (social_inequality || subject) + (social_inequality || species) + (social_inequality | paper)
-
-simulation3 = run_sims(3, n_sim, model_sim3, model_sim3_restricted)
-
-save(simulation3, file="/global/scratch/users/odedritov/simulation3.RData")
-  
