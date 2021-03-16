@@ -1,5 +1,5 @@
 ---
-title: "sim_results"
+title: "Monte Carlo Simulations"
 output: rmarkdown::github_document
 ---
 
@@ -11,9 +11,9 @@ library(tidyverse)
 
 The code bellow summarizes and presents the result of Monte Carlo power simulations for the main model presented in our preregistration.
 
-## Load results
+### Load data
 
-Loads result and reformats simulation output
+The following code loads and reformats simulation output:
 
 ```{r}
 load("simulation1.RData")
@@ -32,7 +32,7 @@ sim_results[[7]] <-as.numeric(sim_results[[7]])
 
 ```
 
-## Present results
+## Results summary
 
 The following code summarizes the result of a power simulation conducted for the full model:
 

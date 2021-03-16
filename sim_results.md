@@ -1,12 +1,10 @@
-sim\_results
+Monte Carlo Simulations
 ================
 
 The code bellow summarizes and presents the result of Monte Carlo power
 simulations for the main model presented in our preregistration.
 
-## Load results
-
-Loads result and reformats simulation output
+The following code loads and reformats simulation output:
 
 ``` r
 load("simulation1.RData")
@@ -23,7 +21,7 @@ sim_results[[6]] <-as.numeric(sim_results[[6]])
 sim_results[[7]] <-as.numeric(sim_results[[7]])
 ```
 
-## Present results
+## Results
 
 The following code summarizes the result of a power simulation conducted
 for the full model:
