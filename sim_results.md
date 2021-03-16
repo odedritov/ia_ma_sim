@@ -4,7 +4,7 @@ Monte Carlo Simulations
 The code bellow summarizes and presents the result of Monte Carlo power
 simulations for the main model presented in our preregistration.
 
-The following code loads and reformats simulation output:
+The following code loads and reformats the simulation output:
 
 ``` r
 load("simulation1.RData")
@@ -30,8 +30,8 @@ y\_simulated \~ effort \* social\_inequality + (social\_inequality \|\|
 subject) + (effort \* social\_inequality \|\| species) +
 (social\_inequality \|\| paper)
 
-Covariates were taken from a preliminary list of 18 eligible papers
-found in test\_probabilities.csv.
+Covariates were taken from a preliminary list of 25 eligible papers and
+can be found in covaraites\_table.csv.
 
 Fixed effects were simulated based on a priori rejection probabilities
 found in the file test\_probabilities.csv.
@@ -40,7 +40,7 @@ Random effects were simulated based on the intercept and slope structure
 of the maximal model, according to SD estimates found in
 simulation\_code\_savio.R.
 
-P-value of model comparison is based on this restricted model:
+P-value of model comparison refers to this restricted model:
 
 y\_simulated \~ effort + (social\_inequality \|\| subject) + (effort \*
 social\_inequality \|\| species) + (social\_inequality \|\| paper)
@@ -62,18 +62,18 @@ print(paste("Percent of models that converged without errors: ", percent_converg
 ``` r
 significant_interaction = mean(as.numeric(sim_results$`p(effort:social_inequality)` < 0.05 & nchar(sim_results$warnings) == 0)) * 100
   
-print(paste("Models that converge and had a significant interaction of effort and social_inequality: ", significant_interaction, "%", sep = ""))
+print(paste("Models that converged with a significant interaction of effort and social_inequality: ", significant_interaction, "%", sep = ""))
 ```
 
-    ## [1] "Models that converge and had a significant interaction of effort and social_inequality: 99.8%"
+    ## [1] "Models that converged with a significant interaction of effort and social_inequality: 99.8%"
 
 ``` r
 significant_comparison = mean(as.numeric(sim_results$`p(model comparison)`) < 0.05 & nchar(sim_results$warnings) == 0) * 100
   
-print(paste("Models that converged and with a significant model comparison: ", significant_comparison, "%", sep = ""))
+print(paste("Models that converged with a significant model comparison: ", significant_comparison, "%", sep = ""))
 ```
 
-    ## [1] "Models that converged and with a significant model comparison: 99.8%"
+    ## [1] "Models that converged with a significant model comparison: 99.8%"
 
 ``` r
 print(paste("Estimated coefficient for intercept: M = ", round(mean(sim_results$b_intercept), digits = 3), ", SD = ", round(sd(sim_results$b_intercept), digits = 3), sep = ""))
@@ -100,14 +100,9 @@ print(paste("Estimated coefficient for interaction of effort and social inequali
     ## [1] "Estimated coefficient for interaction of effort and social inequality: M = 0.655, SD = 0.198"
 
 ``` r
-print("All warnings:")
+print(c("All warnings:", sim_results$warnings[which(nchar(sim_results$warnings) > 0)]))
 ```
 
-    ## [1] "All warnings:"
-
-``` r
-print(sim_results$warnings[which(nchar(sim_results$warnings) > 0)])
-```
-
-    ## [1] "unable to evaluate scaled gradient | checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv, lbound = environment(devfun)$lower) | Model failed to converge: degenerate  Hessian with 1 negative eigenvalues | checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv, lbound = environment(devfun)$lower)"                                              
-    ## [2] "Model failed to converge with max|grad| = 0.167147 (tol = 0.002, component 1) | checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv, lbound = environment(devfun)$lower) | Model is nearly unidentifiable: very large eigenvalue\n - Rescale variables? | checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv, lbound = environment(devfun)$lower)"
+    ## [1] "All warnings:"                                                                                                                                                                                                                                                                                                                                                                   
+    ## [2] "unable to evaluate scaled gradient | checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv, lbound = environment(devfun)$lower) | Model failed to converge: degenerate  Hessian with 1 negative eigenvalues | checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv, lbound = environment(devfun)$lower)"                                              
+    ## [3] "Model failed to converge with max|grad| = 0.167147 (tol = 0.002, component 1) | checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv, lbound = environment(devfun)$lower) | Model is nearly unidentifiable: very large eigenvalue\n - Rescale variables? | checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv, lbound = environment(devfun)$lower)"

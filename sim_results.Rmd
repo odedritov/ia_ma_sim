@@ -11,9 +11,7 @@ library(tidyverse)
 
 The code bellow summarizes and presents the result of Monte Carlo power simulations for the main model presented in our preregistration.
 
-### Load data
-
-The following code loads and reformats simulation output:
+The following code loads and reformats the simulation output:
 
 ```{r}
 load("simulation1.RData")
@@ -32,19 +30,19 @@ sim_results[[7]] <-as.numeric(sim_results[[7]])
 
 ```
 
-## Results summary
+## Results
 
 The following code summarizes the result of a power simulation conducted for the full model:
 
 y_simulated ~ effort * social_inequality + (social_inequality || subject) + (effort * social_inequality || species) + (social_inequality || paper)
 
-Covariates were taken from a preliminary list of 18 eligible papers found in test_probabilities.csv.
+Covariates were taken from a preliminary list of 25 eligible papers and can be found in covaraites_table.csv.
 
 Fixed effects were simulated based on a priori rejection probabilities found in the file test_probabilities.csv.
 
 Random effects were simulated based on the intercept and slope structure of the maximal model, according to SD estimates found in simulation_code_savio.R.
 
-P-value of model comparison is based on this restricted model:
+P-value of model comparison refers to this restricted model:
 
 y_simulated ~ effort + (social_inequality || subject) + (effort * social_inequality || species) + (social_inequality || paper)
 
@@ -59,11 +57,11 @@ print(paste("Percent of models that converged without errors: ", percent_converg
   
 significant_interaction = mean(as.numeric(sim_results$`p(effort:social_inequality)` < 0.05 & nchar(sim_results$warnings) == 0)) * 100
   
-print(paste("Models that converge and had a significant interaction of effort and social_inequality: ", significant_interaction, "%", sep = ""))
+print(paste("Models that converged with a significant interaction of effort and social_inequality: ", significant_interaction, "%", sep = ""))
   
 significant_comparison = mean(as.numeric(sim_results$`p(model comparison)`) < 0.05 & nchar(sim_results$warnings) == 0) * 100
   
-print(paste("Models that converged and with a significant model comparison: ", significant_comparison, "%", sep = ""))
+print(paste("Models that converged with a significant model comparison: ", significant_comparison, "%", sep = ""))
   
 print(paste("Estimated coefficient for intercept: M = ", round(mean(sim_results$b_intercept), digits = 3), ", SD = ", round(sd(sim_results$b_intercept), digits = 3), sep = ""))
 
@@ -73,9 +71,7 @@ print(paste("Estimated coefficient for effort: M = ", round(mean(sim_results$b_e
 
 print(paste("Estimated coefficient for interaction of effort and social inequality: M = ", round(mean(sim_results$b_effortXsocial_inequality), digits = 3), ", SD = ", round(sd(sim_results$b_effortXsocial_inequality), digits = 3), sep = ""))
   
-print("All warnings:")
-  
-print(sim_results$warnings[which(nchar(sim_results$warnings) > 0)])
+print(c("All warnings:", sim_results$warnings[which(nchar(sim_results$warnings) > 0)]))
 
 ```
 
