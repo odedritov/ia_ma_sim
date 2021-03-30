@@ -55,13 +55,13 @@ percent_converged = sum(nchar(sim_results$warnings) == 0) / length(sim_results$w
   
 print(paste("Percent of models that converged without errors: ", percent_converged, "%", sep = ""))
   
-significant_interaction = mean(as.numeric(sim_results$`p(effort:social_inequality)` < 0.05 & nchar(sim_results$warnings) == 0)) * 100
+significant_positive_interaction = mean(as.numeric(sim_results$`p(effort:social_inequality)` < 0.05 & nchar(sim_results$warnings) == 0 & sim_results$b_effortXsocial_inequality > 0)) * 100
   
-print(paste("Models that converged with a significant interaction of effort and social_inequality: ", significant_interaction, "%", sep = ""))
+print(paste("Models that converged with a significant positive interaction of effort and social_inequality: ", significant_positive_interaction, "%", sep = ""))
   
-significant_comparison = mean(as.numeric(sim_results$`p(model comparison)`) < 0.05 & nchar(sim_results$warnings) == 0) * 100
+significant_comparison = mean(as.numeric(sim_results$`p(model comparison)`) < 0.05 & nchar(sim_results$warnings) == 0 & sim_results$b_social_inequality > 0) * 100
   
-print(paste("Models that converged with a significant model comparison: ", significant_comparison, "%", sep = ""))
+print(paste("Models that converged with a significant model comparison and a positive effect of social_inequality: ", significant_comparison, "%", sep = ""))
   
 print(paste("Estimated coefficient for intercept: M = ", round(mean(sim_results$b_intercept), digits = 3), ", SD = ", round(sd(sim_results$b_intercept), digits = 3), sep = ""))
 
@@ -75,3 +75,48 @@ print(c("All warnings:", sim_results$warnings[which(nchar(sim_results$warnings) 
 
 ```
 
+
+### Results with fixed effects set to 0
+
+To get a rough estimate of the Type I error rate, we also conducted the same analysis with the fixed effects set to 0:
+
+
+```{r}
+load("simulation2_h0.RData")
+
+sim_results_h0 <- simulation1 %>%
+               t %>%
+               as.data.frame(stringsAsFactors = FALSE)
+sim_results_h0[[1]] <-as.numeric(sim_results_h0[[1]])
+sim_results_h0[[2]] <-as.numeric(sim_results_h0[[2]])
+sim_results_h0[[3]] <-as.numeric(sim_results_h0[[3]])
+sim_results_h0[[4]] <-as.numeric(sim_results_h0[[4]])
+sim_results_h0[[5]] <-as.numeric(sim_results_h0[[5]])
+sim_results_h0[[6]] <-as.numeric(sim_results_h0[[6]])
+sim_results_h0[[7]] <-as.numeric(sim_results_h0[[7]])
+
+print(paste("Number of iterations: ", nrow(sim_results_h0), sep = ""))
+
+percent_converged = sum(nchar(sim_results_h0$warnings) == 0) / length(sim_results_h0$warnings) * 100
+  
+print(paste("Percent of models that converged without errors: ", percent_converged, "%", sep = ""))
+  
+significant_positive_interaction = mean(as.numeric(sim_results_h0$`p(effort:social_inequality)` < 0.05 & nchar(sim_results_h0$warnings) == 0 & sim_results_h0$b_effortXsocial_inequality > 0)) * 100
+  
+print(paste("Models that converged with a significant positive interaction of effort and social_inequality: ", significant_positive_interaction, "%", sep = ""))
+  
+significant_comparison = mean(as.numeric(sim_results_h0$`p(model comparison)`) < 0.05 & nchar(sim_results_h0$warnings) == 0 & sim_results_h0$b_social_inequality > 0) * 100
+  
+print(paste("Models that converged with a significant model comparison and a positive effect of social_inequality: ", significant_comparison, "%", sep = ""))
+  
+print(paste("Estimated coefficient for intercept: M = ", round(mean(sim_results_h0$b_intercept), digits = 3), ", SD = ", round(sd(sim_results_h0$b_intercept), digits = 3), sep = ""))
+
+print(paste("Estimated coefficient for social_inequality: M = ", round(mean(sim_results_h0$b_social_inequality), digits = 3), ", SD = ", round(sd(sim_results_h0$b_social_inequality), digits = 3), sep = ""))
+  
+print(paste("Estimated coefficient for effort: M = ", round(mean(sim_results_h0$b_effort), digits = 3), ", SD = ", round(sd(sim_results_h0$b_effort), digits = 3), sep = ""))
+
+print(paste("Estimated coefficient for interaction of effort and social inequality: M = ", round(mean(sim_results_h0$b_effortXsocial_inequality), digits = 3), ", SD = ", round(sd(sim_results_h0$b_effortXsocial_inequality), digits = 3), sep = ""))
+  
+print(c("All warnings:", sim_results_h0$warnings[which(nchar(sim_results_h0$warnings) > 0)]))
+
+```
