@@ -10,4 +10,8 @@ simulation_code_savio.R: code used to run the simulations on a cluster computing
 
 simulation1.RData: output from simulation_code_savio.R
 
+simulation_code_savio_h0.R: code used to run simulation with fixed effects set to 0
+
+simulation2_h0.RData: output from simulation_code_savio_h0.R
+
 sim_results.md: summary of the results
